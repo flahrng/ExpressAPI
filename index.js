@@ -10,6 +10,12 @@ app.route('/api/pessoas')
 .get(function(req, res) {
     var pagina = req.query.pagina;
     var tamanho = req.query.tamanho;
+
+    if((pagina != undefined && pagina < 0) || (tamanho != undefined && tamanho < 0)){
+        res.json("Informe um valor válido!");
+        return;
+    }
+
     var numeroRegistros = data.listaPessoa.length;
 
     var obj = {
@@ -19,11 +25,11 @@ app.route('/api/pessoas')
         registros: []
     };
 
-    data.listaPessoa.forEach(function(item) {         
-        obj.registros.push(item);
+    data.listaPessoa.forEach(function(item) {
+        obj.registros.push(item);        
     })
 
-    res.send(JSON.stringify(obj));
+    res.json(obj);
 })
 .post(function(req, res) {
     var nome = req.query.nome != undefined ? req.query.nome : null;
@@ -33,32 +39,32 @@ app.route('/api/pessoas')
     var meta = req.query.meta != undefined ? req.query.meta : null;
     
     if(utils.isEmptyOrNull(nome) || utils.isEmptyOrNull(dataNascimento) || utils.isEmptyOrNull(ativo) || utils.isEmptyOrNull(meta)){
-        res.send("Informe um valor válido para as informações obrigatórias!").end();
+        res.json("Informe um valor válido para as informações obrigatórias!").end();
         return;
     }  
         
     if(!utils.isDataValida(dataNascimento)){
-        res.send("Informe um valor válido para 'Data de Nascimento'!").end();
+        res.json("Informe um valor válido para 'Data de Nascimento'!").end();
         return;
     }
 
     if(!utils.isNomeValido(nome)){
-        res.send("Informe um valor válido para 'Nome'!").end();
+        res.json("Informe um valor válido para 'Nome'!").end();
         return;
     }
 
     if(!utils.isMetaValida(meta)){
-        res.send("Informe um valor válido para 'Meta'!").end();
+        res.json("Informe um valor válido para 'Meta'!").end();
         return;
     }
 
     if(!utils.isAtivoValido(ativo)){
-        res.send("Informe um valor válido para 'Ativo'!").end();
+        res.json("Informe um valor válido para 'Ativo'!").end();
         return;
     }
 
     if(!utils.isCpfValido(cpf)){
-        res.send("Informe um valor válido para 'CPF'!").end();
+        res.json("Informe um valor válido para 'CPF'!").end();
         return;
     }
 
@@ -73,12 +79,12 @@ app.route('/api/pessoas')
     })
 
     if(cpfJaCadastrado){
-        res.send("O CPF informado já existe na base!").end();
+        res.json("O CPF informado já existe na base!").end();
         return;
     }
 
     data.addPessoa(nome, dataNascimento, cpf, ativo, meta);
-    res.send("Usuário cadastrado!").end();        
+    res.json("Usuário cadastrado!").end();        
 });
 
 app.route('/api/pessoas/:id')
@@ -95,9 +101,9 @@ app.route('/api/pessoas/:id')
     })
 
     if(exist){
-        res.send(obj).end();
+        res.json(obj).end();
     } else {
-        res.send("Usuário não encontrado!").end();     
+        res.json("Usuário não encontrado!").end();     
     }
 })
 .put(function(req, res) {

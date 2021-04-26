@@ -72,7 +72,11 @@ function isDataValida(data){
 }
 
 function isAtivoValido(ativo){    
-    return ativo == false || ativo == true;
+    if(ativo){
+        return true;
+    }
+
+    return false;
 }
 
 exports.isCpfValido = isCpfValido;
