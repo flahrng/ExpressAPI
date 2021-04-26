@@ -71,11 +71,10 @@ function isDataValida(data){
     return true;
 }
 
-function isAtivoValido(ativo){    
-    if(ativo){
+function isAtivoValido(ativo){        
+    if(ativo === true || ativo === false){
         return true;
-    }
-
+    }    
     return false;
 }
 
