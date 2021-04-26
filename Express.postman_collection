@@ -1,0 +1,1298 @@
+{
+	"info": {
+		"_postman_id": "1335693d-d2f5-4894-9564-6f02a1669763",
+		"name": "Express Copy",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Validar as pessoas retornadas",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const responseJson = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Validar as pessoas retornadas\", function(){\r",
+							"    pm.response.to.have.status(200);\r",
+							"    pm.expect(responseJson.numeroRegistros).to.eql(3);\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:3000/api/pessoas",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"pessoas"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Validar o tamanho retornado",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const responseJson = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Validar o tamanho retornado\", function(){\r",
+							"    pm.response.to.have.status(200);\r",
+							"    pm.expect(responseJson.pagina).to.eql(\"1\");\r",
+							"    pm.expect(responseJson.tamanho).to.eql(\"10\");\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:3000/api/pessoas?tamanho=10&pagina=1",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"pessoas"
+					],
+					"query": [
+						{
+							"key": "tamanho",
+							"value": "10"
+						},
+						{
+							"key": "pagina",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Validar pessoa com id existente",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const responseJson = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Validar pessoa com id existente\", function(){\r",
+							"    pm.response.to.have.status(200);\r",
+							"    pm.expect(responseJson.id).to.eql(1);\r",
+							"    pm.expect(responseJson.nome).to.eql(\"João da Silva\");\r",
+							"    pm.expect(responseJson.dataNascimento).to.eql(\"01/01/2000\");\r",
+							"    pm.expect(responseJson.cpf).to.eql(\"123.456.789-00\");\r",
+							"    pm.expect(responseJson.ativo).to.eql(true);\r",
+							"    pm.expect(responseJson.meta).to.eql(1000);\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:3000/api/pessoas/1",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"pessoas",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Validar pessoa com id inexistente",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const responseJson = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Validar pessoa com id inexistente\", function(){\r",
+							"    pm.response.to.have.status(200);\r",
+							"    pm.expect(responseJson).to.eql(\"Usuário não encontrado!\");\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:3000/api/pessoas/999",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"pessoas",
+						"999"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Cadastrar Pessoa - data de nascimento > data atual",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const responseJson = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Validar Data de nascimento > Data atual\", function(){\r",
+							"    pm.response.to.have.status(200);\r",
+							"    pm.expect(responseJson).to.eql(\"Informe um valor válido para 'Data de Nascimento'!\");\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"nome\": \"Teste 1\",\r\n    \"dataNascimento\": \"2030-07-10\",\r\n    \"cpf\": \"121.922.050-74\",\r\n    \"ativo\": true,\r\n    \"meta\": 50\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/api/pessoas",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"pessoas"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Cadastrar Pessoa - data de nascimento com formato inválido",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const responseJson = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Validar Data de nascimento com formato inválido\", function(){\r",
+							"    pm.response.to.have.status(200);\r",
+							"    pm.expect(responseJson).to.eql(\"Informe um valor válido para 'Data de Nascimento'!\");\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"nome\": \"Teste 2\",\r\n    \"dataNascimento\": \"10-07-2020\",\r\n    \"cpf\": \"184.575.110-84\",\r\n    \"ativo\": true,\r\n    \"meta\": 50\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/api/pessoas",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"pessoas"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Cadastrar Pessoa - data de nascimento inválida",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const responseJson = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Validar Data de nascimento inválida\", function(){\r",
+							"    pm.response.to.have.status(200);\r",
+							"    pm.expect(responseJson).to.eql(\"Informe um valor válido para 'Data de Nascimento'!\");\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"nome\": \"Teste 3\",\r\n    \"dataNascimento\": \"2020-07-50\",\r\n    \"cpf\": \"272.293.390-06\",\r\n    \"ativo\": true,\r\n    \"meta\": 50\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/api/pessoas",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"pessoas"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Cadastrar Pessoa - data de nascimento em branco",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const responseJson = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Validar Data de nascimento em branco\", function(){\r",
+							"    pm.response.to.have.status(200);\r",
+							"    pm.expect(responseJson).to.eql(\"Informe um valor válido para as informações obrigatórias!\");\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"nome\": \"Teste 4\",\r\n    \"dataNascimento\": \"\",\r\n    \"cpf\": \"938.086.030-70\",\r\n    \"ativo\": true,\r\n    \"meta\": 50\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/api/pessoas",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"pessoas"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Cadastrar Pessoa - cpf inválido",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const responseJson = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Validar CPF inválido\", function(){\r",
+							"    pm.response.to.have.status(200);\r",
+							"    pm.expect(responseJson).to.eql(\"Informe um valor válido para 'CPF'!\");\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"nome\": \"Teste 5\",\r\n    \"dataNascimento\": \"2020-07-10\",\r\n    \"cpf\": \"12345678901\",\r\n    \"ativo\": true,\r\n    \"meta\": 50\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/api/pessoas",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"pessoas"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Cadastrar Pessoa - ativo vazio",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const responseJson = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Validar Ativo vazio\", function(){\r",
+							"    pm.response.to.have.status(200);\r",
+							"    pm.expect(responseJson).to.eql(\"Informe um valor válido para as informações obrigatórias!\");\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"nome\": \"Teste 6\",\r\n    \"dataNascimento\": \"2020-07-10\",\r\n    \"cpf\": \"717.243.810-83\",\r\n    \"ativo\": \"\",\r\n    \"meta\": 50\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/api/pessoas",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"pessoas"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Cadastrar Pessoa - ativo informando valor diferente de boolean",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const responseJson = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Validar Ativo informando valor diferente de boolean\", function(){\r",
+							"    pm.response.to.have.status(200);\r",
+							"    pm.expect(responseJson).to.eql(\"Informe um valor válido para as informações obrigatórias!\");\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"nome\": \"Teste 7\",\r\n    \"dataNascimento\": \"2020-07-10\",\r\n    \"cpf\": \"717.243.810-83\",\r\n    \"ativo\": \"abc\",\r\n    \"meta\": 50\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/api/pessoas",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"pessoas"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Cadastrar Pessoa - meta vazia",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const responseJson = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Validar Meta vazia\", function(){\r",
+							"    pm.response.to.have.status(200);\r",
+							"    pm.expect(responseJson).to.eql(\"Informe um valor válido para as informações obrigatórias!\");\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"nome\": \"Teste 8\",\r\n    \"dataNascimento\": \"2020-07-10\",\r\n    \"cpf\": \"030.290.640-18\",\r\n    \"ativo\": true,\r\n    \"meta\": \"\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/api/pessoas",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"pessoas"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Cadastrar Pessoa - meta <= 0",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const responseJson = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Validar Meta menor que zero\", function(){\r",
+							"    pm.response.to.have.status(200);\r",
+							"    pm.expect(responseJson).to.eql(\"Informe um valor válido para 'Meta'!\");\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"nome\": \"Teste 9\",\r\n    \"dataNascimento\": \"2020-07-10\",\r\n    \"cpf\": \"230.904.620-52\",\r\n    \"ativo\": true,\r\n    \"meta\": -10\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/api/pessoas",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"pessoas"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Cadastrar Pessoa - nome em branco",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const responseJson = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Validar Nome em branco\", function(){\r",
+							"    pm.response.to.have.status(200);\r",
+							"    pm.expect(responseJson).to.eql(\"Informe um valor válido para as informações obrigatórias!\");\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"nome\": \"\",\r\n    \"dataNascimento\": \"2020-07-10\",\r\n    \"cpf\": \"672.116.080-30\",\r\n    \"ativo\": true,\r\n    \"meta\": 50\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/api/pessoas",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"pessoas"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Cadastrar Pessoa - nome > 50 caracteres",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const responseJson = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Validar Nome com mais de 50 caracteres\", function(){\r",
+							"    pm.response.to.have.status(200);\r",
+							"    pm.expect(responseJson).to.eql(\"Informe um valor válido para 'Nome'!\");\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"nome\": \"TesteTesteTesteTesteTesteTesteTesteTesteTesteTeste1\",\r\n    \"dataNascimento\": \"2020-07-10\",\r\n    \"cpf\": \"121.701.500-05\",\r\n    \"ativo\": false,\r\n    \"meta\": 50.0\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/api/pessoas",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"pessoas"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Cadastrar Pessoa - Usuario cadastrado",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const responseJson = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Validar Usuario cadastrado\", function(){\r",
+							"    pm.response.to.have.status(200);\r",
+							"    pm.expect(responseJson).to.eql(\"Usuário cadastrado!\");\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"nome\": \"Teste 0\",\r\n    \"dataNascimento\": \"2020-07-10\",\r\n    \"cpf\": \"230.904.620-52\",\r\n    \"ativo\": true,\r\n    \"meta\": 1000.00\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/api/pessoas",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"pessoas"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Cadastrar Pessoa - Usuario duplicado",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const responseJson = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Validar Usuario cadastrado\", function(){\r",
+							"    pm.response.to.have.status(200);\r",
+							"    pm.expect(responseJson).to.eql(\"O CPF informado já existe na base!\");\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"nome\": \"Teste 0\",\r\n    \"dataNascimento\": \"2020-07-10\",\r\n    \"cpf\": \"230.904.620-52\",\r\n    \"ativo\": true,\r\n    \"meta\": 1000.00\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/api/pessoas",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"pessoas"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Editar Pessoa - data de nascimento > data atual",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Validar Data de nascimento > Data atual\", function(){\r",
+							"    pm.response.to.have.status(200);\r",
+							"    pm.expect(pm.response.text()).to.eql(\"Informe um valor válido para 'Data de Nascimento'!\\nUsuário não editado!\");\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"nome\": \"Teste 1\",\r\n    \"dataNascimento\": \"2030-07-10\",\r\n    \"cpf\": \"121.922.050-74\",\r\n    \"ativo\": true,\r\n    \"meta\": 50\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/api/pessoas/1",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"pessoas",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Editar Pessoa - data de nascimento com formato inválido",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Validar Data de nascimento com formato inválido\", function(){\r",
+							"    pm.response.to.have.status(200);\r",
+							"    pm.expect(pm.response.text()).to.eql(\"Informe um valor válido para 'Data de Nascimento'!\\nUsuário não editado!\");\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"nome\": \"Teste 2\",\r\n    \"dataNascimento\": \"10-07-2020\",\r\n    \"cpf\": \"184.575.110-84\",\r\n    \"ativo\": true,\r\n    \"meta\": 50\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/api/pessoas/1",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"pessoas",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Editar Pessoa - data de nascimento inválida",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Validar Data de nascimento inválida\", function(){\r",
+							"    pm.response.to.have.status(200);\r",
+							"    pm.expect(pm.response.text()).to.eql(\"Informe um valor válido para 'Data de Nascimento'!\\nUsuário não editado!\");\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"nome\": \"Teste 3\",\r\n    \"dataNascimento\": \"2020-07-50\",\r\n    \"cpf\": \"272.293.390-06\",\r\n    \"ativo\": true,\r\n    \"meta\": 50\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/api/pessoas/1",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"pessoas",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Editar Pessoa - data de nascimento em branco",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Validar Data de nascimento em branco\", function(){\r",
+							"    pm.response.to.have.status(200);\r",
+							"    pm.expect(pm.response.text()).to.eql(\"Informe um valor válido para 'Data de Nascimento'!\\nUsuário não editado!\");\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"nome\": \"Teste 4\",\r\n    \"dataNascimento\": \"\",\r\n    \"cpf\": \"938.086.030-70\",\r\n    \"ativo\": true,\r\n    \"meta\": 50\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/api/pessoas/1",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"pessoas",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Editar Pessoa - cpf inválido",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Validar CPF inválido\", function(){\r",
+							"    pm.response.to.have.status(200);\r",
+							"    pm.expect(pm.response.text()).to.eql(\"Informe um valor válido para 'CPF'!\\nUsuário não editado!\");\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"nome\": \"Teste 5\",\r\n    \"dataNascimento\": \"2020-07-10\",\r\n    \"cpf\": \"12345678901\",\r\n    \"ativo\": true,\r\n    \"meta\": 50\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/api/pessoas/1",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"pessoas",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Editar Pessoa - ativo vazio",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Validar Ativo vazio\", function(){\r",
+							"    pm.response.to.have.status(200);\r",
+							"    pm.expect(pm.response.text()).to.eql(\"Informe um valor válido para 'Ativo'!\\nUsuário não editado!\");\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"nome\": \"Teste 6\",\r\n    \"dataNascimento\": \"2020-07-10\",\r\n    \"cpf\": \"717.243.810-83\",\r\n    \"ativo\": \"\",\r\n    \"meta\": 50\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/api/pessoas/1",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"pessoas",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Editar Pessoa - ativo informando valor diferente de boolean",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Validar Ativo informando valor diferente de boolean\", function(){\r",
+							"    pm.response.to.have.status(200);    \r",
+							"    pm.expect(pm.response.text()).to.eql(\"Informe um valor válido para 'Ativo'!\\nUsuário não editado!\");\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"nome\": \"Teste 7\",\r\n    \"dataNascimento\": \"2020-07-10\",\r\n    \"cpf\": \"717.243.810-83\",\r\n    \"ativo\": \"abc\",\r\n    \"meta\": 50\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/api/pessoas/1",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"pessoas",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Editar Pessoa - meta vazia",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Validar Meta vazia\", function(){\r",
+							"    pm.response.to.have.status(200);    \r",
+							"    pm.expect(pm.response.text()).to.eql(\"Informe um valor válido para 'Meta'!\\nUsuário não editado!\");\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"nome\": \"Teste 8\",\r\n    \"dataNascimento\": \"2020-07-10\",\r\n    \"cpf\": \"030.290.640-18\",\r\n    \"ativo\": true,\r\n    \"meta\": \"\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/api/pessoas/1",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"pessoas",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Editar Pessoa - meta <= 0",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Validar Meta menor que zero\", function(){\r",
+							"    pm.response.to.have.status(200);\r",
+							"    pm.expect(pm.response.text()).to.eql(\"Informe um valor válido para 'Meta'!\\nUsuário não editado!\");\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"nome\": \"Teste 9\",\r\n    \"dataNascimento\": \"2020-07-10\",\r\n    \"cpf\": \"230.904.620-52\",\r\n    \"ativo\": true,\r\n    \"meta\": -10\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/api/pessoas/1",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"pessoas",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Editar Pessoa - nome em branco",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Validar Nome em branco\", function(){\r",
+							"    pm.response.to.have.status(200);    \r",
+							"    pm.expect(pm.response.text()).to.eql(\"Informe um valor válido para 'Nome'!\\nUsuário não editado!\");\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"nome\": \"\",\r\n    \"dataNascimento\": \"2020-07-10\",\r\n    \"cpf\": \"672.116.080-30\",\r\n    \"ativo\": true,\r\n    \"meta\": 50\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/api/pessoas/1",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"pessoas",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Editar Pessoa - nome > 50 caracteres",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Validar Nome com mais de 50 caracteres\", function(){\r",
+							"    pm.response.to.have.status(200);\r",
+							"    pm.expect(pm.response.text()).to.eql(\"Informe um valor válido para 'Nome'!\\nUsuário não editado!\");\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"nome\": \"TesteTesteTesteTesteTesteTesteTesteTesteTesteTeste1\",\r\n    \"dataNascimento\": \"2020-07-10\",\r\n    \"cpf\": \"121.701.500-05\",\r\n    \"ativo\": false,\r\n    \"meta\": 50.0\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/api/pessoas/1",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"pessoas",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Editar Pessoa - Usuario editado",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Validar Usuario editado\", function(){\r",
+							"    pm.response.to.have.status(200);\r",
+							"    pm.expect(pm.response.text()).to.eql(\"Usuário editado!\");\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"nome\": \"Teste 0\",\r\n    \"dataNascimento\": \"2020-07-10\",\r\n    \"cpf\": \"230.904.620-52\",\r\n    \"ativo\": true,\r\n    \"meta\": 1000.00\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/api/pessoas/1",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"pessoas",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Editar Pessoa - Usuario inexistente",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Validar Usuario editado\", function(){\r",
+							"    pm.response.to.have.status(200);\r",
+							"    pm.expect(pm.response.text()).to.eql(\"Usuário não existe!\");\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"nome\": \"Teste 0\",\r\n    \"dataNascimento\": \"2020-07-10\",\r\n    \"cpf\": \"230.904.620-52\",\r\n    \"ativo\": true,\r\n    \"meta\": 1000.00\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/api/pessoas/999",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"pessoas",
+						"999"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
