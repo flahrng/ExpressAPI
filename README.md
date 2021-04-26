@@ -9,3 +9,5 @@ Os testes automatizados foram feitos utilizando a ferramenta Postman. Para execu
 - Abrir o Runner (Ctrl + Shift + R), arrastar a collection e clicar no botão "Run"
 
 Obs.: Note que antes de cada execução é necessário reiniciar o server
+
+Os arquivos com os Casos de Teste e as observações feitas a respeito da documentação estão na raiz do projeto.
