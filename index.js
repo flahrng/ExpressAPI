@@ -32,13 +32,13 @@ app.route('/api/pessoas')
     res.json(obj);
 })
 .post(function(req, res) {
-    var nome = req.query.nome != undefined ? req.query.nome : null;
-    var dataNascimento = req.query.dataNascimento != undefined ? req.query.dataNascimento : null;
-    var cpf = req.query.cpf != undefined ? req.query.cpf : null;
-    var ativo = req.query.ativo != undefined ? req.query.ativo : null;
-    var meta = req.query.meta != undefined ? req.query.meta : null;
+    var nome = req.body.nome != undefined ? req.body.nome : null;
+    var dataNascimento = req.body.dataNascimento != undefined ? req.body.dataNascimento : null;
+    var cpf = req.body.cpf != undefined ? req.body.cpf.replace(/[^a-zA-Z0-9]/g,'') : null;
+    var ativo = req.body.ativo != undefined ? req.body.ativo : null;
+    var meta = req.body.meta != undefined ? req.body.meta : null;
     
-    if(utils.isEmptyOrNull(nome) || utils.isEmptyOrNull(dataNascimento) || utils.isEmptyOrNull(ativo) || utils.isEmptyOrNull(meta)){
+    if(utils.isEmptyOrNull(nome) || utils.isEmptyOrNull(dataNascimento) || !utils.isAtivoValido(ativo) || utils.isEmptyOrNull(meta)){        
         res.json("Informe um valor válido para as informações obrigatórias!").end();
         return;
     }  
